@@ -1,7 +1,31 @@
 import styled from 'styled-components';
-
+import { auth, provider } from '../firebase';
+import { signInWithPopup,  } from "firebase/auth"
 
 const Header = (props) => {
+
+    const handleAuth = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                
+                // const credential = GoogleAuthProvider.credentialFromResult(result);
+                
+                const user = result.user;
+                console.log(user);
+                
+            }).catch((error) => {
+                
+                
+                const errorMessage = error.message;
+                
+                // const email = error.customData.email;
+                
+                // const credential = GoogleAuthProvider.credentialFromError(error);
+            
+                alert(errorMessage);
+            });
+    }
+
     return (
         <Nav>
             <Logo>
@@ -42,7 +66,7 @@ const Header = (props) => {
 
             </NavMenu>
 
-            <Login>Login</Login>
+            <Login onClick={handleAuth}>Login</Login>
 
         </Nav>
     )
@@ -154,7 +178,7 @@ const Login = styled.a`
     padding: 7px 40px;
     border: 1px solid #f9f9f9;
     letter-spacing: 1.5px;
-    transition: .3s ease-out;
+    transition: all .3s ease 0s;
     cursor: pointer;
     &:hover{
         background-color: #f9f9f9;

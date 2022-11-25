@@ -33,6 +33,7 @@ height: 100vh;
 `;
 
 const Content = styled.div`
+transform: translateY(-120px)
 margin-bottom: 10vw;
 width: 100%;
 position: relative;
