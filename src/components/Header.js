@@ -1,30 +1,46 @@
 import styled from 'styled-components';
+import {useDispatch , useSelector } from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import { auth, provider } from '../firebase';
-import { signInWithPopup,  } from "firebase/auth"
+import { signInWithPopup, } from "firebase/auth";
+
+import {selectUserName, selectUserEmail, selectUserPhoto, setUserLoginDetails} from '../features/users/userSlice';
+
+
+
+
 
 const Header = (props) => {
+const dispatch = useDispatch();
+const history = useHistory();
+const userName = useSelector(selectUserName);
+const userPhoto = useSelector(selectUserPhoto);
+const email = useSelector(selectUserEmail);
+
+
 
     const handleAuth = () => {
         signInWithPopup(auth, provider)
             .then((result) => {
-                
-                // const credential = GoogleAuthProvider.credentialFromResult(result);
-                
+
                 const user = result.user;
-                console.log(user);
                 
+                setUser(result.user);
+
             }).catch((error) => {
-                
-                
                 const errorMessage = error.message;
-                
-                // const email = error.customData.email;
-                
-                // const credential = GoogleAuthProvider.credentialFromError(error);
-            
                 alert(errorMessage);
             });
     }
+
+    const setUser = (user) => {
+        dispatch(setUserLoginDetails({ 
+            name: user.name,
+            email: user.email,
+            photo: user.photo
+        }));
+    }
+
 
     return (
         <Nav>
