@@ -44,7 +44,7 @@ justify-content: center;
 align-items: center;
 flex-direction: column;
 padding: 80px 40px;
-height: 100%;
+height: 100%; 
 
 `;
 

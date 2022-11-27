@@ -1,21 +1,21 @@
 import styled from 'styled-components';
-import {useDispatch , useSelector } from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { auth, provider } from '../firebase';
 import { signInWithPopup, } from "firebase/auth";
 
-import {selectUserName, selectUserEmail, selectUserPhoto, setUserLoginDetails} from '../features/users/userSlice';
+import { selectUserName, selectUserEmail, selectUserPhoto, setUserLoginDetails } from '../features/users/userSlice';
 
 
 
 
 
 const Header = (props) => {
-const dispatch = useDispatch();
-const history = useHistory();
-const userName = useSelector(selectUserName);
-const userPhoto = useSelector(selectUserPhoto);
-const email = useSelector(selectUserEmail);
+    const dispatch = useDispatch();
+    // const history = useHistory();
+    const userName = useSelector(selectUserName);
+    const userPhoto = useSelector(selectUserPhoto);
+    const email = useSelector(selectUserEmail);
 
 
 
@@ -24,7 +24,7 @@ const email = useSelector(selectUserEmail);
             .then((result) => {
 
                 const user = result.user;
-                
+
                 setUser(result.user);
 
             }).catch((error) => {
@@ -34,10 +34,10 @@ const email = useSelector(selectUserEmail);
     }
 
     const setUser = (user) => {
-        dispatch(setUserLoginDetails({ 
-            name: user.name,
+        dispatch(setUserLoginDetails({
+            name: user.displayName,
             email: user.email,
-            photo: user.photo
+            photo: user.photoURL
         }));
     }
 
@@ -48,7 +48,11 @@ const email = useSelector(selectUserEmail);
                 <img src="/images/logo.svg" alt="" />
             </Logo>
 
-            <NavMenu>
+            {
+                !userName ?(<Login onClick={handleAuth}>Login</Login>
+                    ):(
+                    <>
+                <NavMenu>
                 <a href="/">
                     <img src="/images/home-icon.svg" alt="" />
                     <span>HOME</span>
@@ -80,13 +84,15 @@ const email = useSelector(selectUserEmail);
                 </a>
 
 
-            </NavMenu>
+                </NavMenu>
 
-            <Login onClick={handleAuth}>Login</Login>
+            <UserImg src={userPhoto} alt="" />
+
+                    </>
+            )}
 
         </Nav>
-    )
-}
+    )}
 
 const Nav = styled.nav`
 position: fixed;
@@ -200,6 +206,9 @@ const Login = styled.a`
         background-color: #f9f9f9;
         color: #333;
     }
-`
-
+`;
+const UserImg = styled.img`
+height: 40px;
+border-radius: 50%;
+`;
 export default Header;
